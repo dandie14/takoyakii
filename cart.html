@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Your Cart - Takoyaki</title>
+  <link rel="stylesheet" href="cart.css">
+</head>
+<body>
+  <div class="cart-container">
+    <a href="menu.html" class="back-to-menu">← Back to Menu</a>
+
+    <h2>Your Cart</h2>
+    <div id="cart-items"></div>
+
+    <div class="cart-controls">
+      <button class="clear-btn" id="clear-cart">🗑️ Clear All</button>
+      <button class="checkout-btn" id="checkout-now">✅ Proceed to Checkout</button>
+    </div>
+  </div>
+
+  <script>
+    let cartItems = JSON.parse(localStorage.getItem("cart")) || [];
+    const cartDiv = document.getElementById("cart-items");
+
+    function renderCart() {
+      cartDiv.innerHTML = "";
+      if (cartItems.length === 0) {
+        cartDiv.innerHTML = "<p>Your cart is empty.</p>";
+        return;
+      }
+
+      cartItems.forEach((item, index) => {
+        cartDiv.innerHTML += `
+          <div class="cart-item" data-index="${index}">
+            <input type="checkbox" class="checkout-checkbox" data-index="${index}" checked>
+            <img src="${item.image}" alt="${item.name}">
+            <div class="item-details">
+              <p><strong>${item.name}</strong></p>
+              <p>Quantity: ${item.quantity}</p>
+              <p>Total: ₱${item.total}</p>
+            </div>
+            <button class="delete-btn" data-index="${index}">🗑️</button>
+          </div>
+        `;
+      });
+
+      document.querySelectorAll(".delete-btn").forEach(btn => {
+        btn.addEventListener("click", e => {
+          const i = parseInt(e.target.dataset.index);
+          cartItems.splice(i, 1);
+          localStorage.setItem("cart", JSON.stringify(cartItems));
+          renderCart();
+        });
+      });
+    }
+
+    document.getElementById("clear-cart").addEventListener("click", () => {
+      localStorage.removeItem("cart");
+      cartItems = [];
+      renderCart();
+    });
+
+    document.getElementById("checkout-now").addEventListener("click", () => {
+      const checkboxes = document.querySelectorAll(".checkout-checkbox");
+      const selectedItems = [];
+
+      checkboxes.forEach(cb => {
+        if (cb.checked) {
+          selectedItems.push(cartItems[parseInt(cb.dataset.index)]);
+        }
+      });
+
+      if (selectedItems.length === 0) {
+        alert("Please select at least one item to checkout.");
+        return;
+      }
+
+      const total = selectedItems.reduce((sum, i) => sum + i.total, 0);
+      localStorage.setItem("checkout-cart", JSON.stringify(selectedItems));
+      localStorage.setItem("checkout-total", total);
+      window.location.href = "adr.html";
+    });
+
+    renderCart();
+  </script>
+</body>
+</html>

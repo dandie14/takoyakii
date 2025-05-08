@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Checkout - Takoyaki</title>
+  <link rel="stylesheet" href="adr.css">
+</head>
+<body>
+
+  <div class="form-container">
+    <h2>Checkout Form</h2>
+
+    <form action="submit_order.php" method="POST" id="orderForm">
+      <label>First Name</label>
+      <input type="text" name="first_name" required>
+
+      <label>Last Name</label>
+      <input type="text" name="last_name" required>
+
+      <label>Contact Number</label>
+      <input type="text" name="contact_number" required>
+
+      <label>Address</label>
+      <textarea name="address" required></textarea>
+
+      <!-- Hidden fields will be inserted dynamically by JavaScript -->
+      <div id="hiddenFields"></div>
+
+      <button type="submit">PLACE YOUR ORDER</button>
+    </form>
+  </div>
+  <script>
+    const cart = JSON.parse(localStorage.getItem("checkout-cart")) || [];
+    const total = localStorage.getItem("checkout-total") || 0;
+  
+    if (cart.length > 0) {
+      const display = document.createElement("div");
+      display.innerHTML = `<h3>Order Summary</h3><ul>${
+        cart.map(i => `
+          <li style="margin-bottom: 10px;">
+            <img src="${i.image}" alt="${i.name}" style="width: 80px; vertical-align: middle; margin-right: 10px;">
+            ${i.name} - ${i.quantity} pcs - ₱${i.total}
+          </li>
+        `).join("")
+      }</ul><strong>Total: ₱${total}</strong>`;
+      document.body.insertBefore(display, document.querySelector(".form-container"));
+  
+      const hiddenFieldsDiv = document.getElementById("hiddenFields");
+  
+      cart.forEach(item => {
+        hiddenFieldsDiv.innerHTML += `
+          <input type="hidden" name="product_name[]" value="${item.name}">
+          <input type="hidden" name="quantity[]" value="${item.quantity}">
+          <input type="hidden" name="total_price[]" value="${item.total}">
+          <input type="hidden" name="image_url[]" value="${item.image}">
+        `;
+      });
+    }
+  </script>
+  
+  
+
+</body>
+</html>

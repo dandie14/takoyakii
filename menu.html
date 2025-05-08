@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Takoyaki Shop</title>
+  <link href="https://fonts.googleapis.com/css2?family=Sawarabi+Mincho&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="menu.css">
+  <script defer>
+    document.addEventListener("DOMContentLoaded", () => {
+      // Quantity controls
+      document.querySelectorAll(".product-card").forEach(card => {
+        const input = card.querySelector("input[type='number']");
+        card.querySelector(".minus").addEventListener("click", () => {
+          input.value = Math.max(1, parseInt(input.value) - 1);
+        });
+        card.querySelector(".add").addEventListener("click", () => {
+          input.value = parseInt(input.value) + 1;
+        });
+      });
+
+      // Add to Cart
+      document.querySelectorAll(".add-cart-btn").forEach(button => {
+        button.addEventListener("click", (e) => {
+          const card = e.target.closest(".product-card");
+          const name = card.dataset.name;
+          const price = parseInt(card.dataset.price);
+          const quantity = parseInt(card.querySelector("input").value);
+          const image = card.querySelector("img").src;
+          const total = price * quantity;
+
+          const cart = JSON.parse(localStorage.getItem("cart")) || [];
+          cart.push({ name, price, quantity, total, image });
+          localStorage.setItem("cart", JSON.stringify(cart));
+
+          alert(`${name} added to cart!`);
+        });
+      });
+
+      // Direct Checkout
+      document.querySelectorAll(".checkout-btn").forEach(button => {
+        button.addEventListener("click", (e) => {
+          const card = e.target.closest(".product-card");
+          const name = card.dataset.name;
+          const price = parseInt(card.dataset.price);
+          const quantity = parseInt(card.querySelector("input").value);
+          const image = card.querySelector("img").src;
+          const total = price * quantity;
+
+          const checkoutItems = [{ name, price, quantity, total, image }];
+          localStorage.setItem("checkout-cart", JSON.stringify(checkoutItems));
+          localStorage.setItem("checkout-total", total);
+          window.location.href = "adr.html";
+
+          window.location.href = "adr.html";
+        });
+      });
+    });
+  </script>
+</head>
+<body>
+  <header>
+    <div class="logo"> 
+        <img src="TK image/takoyaki-logo-design-vector.jpg" alt="Takoyaki Logo">
+    </div>
+    <nav>
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="about.html">About</a></li>
+          <li><a href="menu.html">Menu</a></li>
+          <li><a href="cart.html">Cart</a></li>
+        </ul>
+    </nav>
+  </header>
+
+  <main>
+    <div class="product-container">
+      <!-- Example item -->
+      <div class="product-card" data-name="HAM" data-price="10">
+        <img src="TK image/download (1).jpg" alt="Ham">
+        <h2>HAM</h2>
+        <p>₱10 per piece</p>
+        <div class="controls">
+          <label>PCS: </label>
+          <button class="minus">-</button>
+          <input type="number" value="1" min="1">
+          <button class="add">+</button>
+        </div>
+        <button class="add-cart-btn">Add to Cart</button>
+        <button class="checkout-btn">Check Out</button>
+      </div>
+
+      <!-- Repeat for BACON -->
+      <div class="product-card" data-name="BACON" data-price="10">
+        <img src="TK image/download (2).jpg" alt="Bacon">
+        <h2>CRAB</h2>
+        <p>₱10 per piece</p>
+        <div class="controls">
+          <label>PCS: </label>
+          <button class="minus">-</button>
+          <input type="number" value="1" min="1">
+          <button class="add">+</button>
+        </div>
+        <button class="add-cart-btn">Add to Cart</button>
+        <button class="checkout-btn">Check Out</button>
+      </div>
+
+      <!-- Repeat for CHEESE -->
+      <div class="product-card" data-name="CHEESE" data-price="10">
+        <img src="TK image/images.jpg" alt="Cheese">
+        <h2>CHEESE</h2>
+        <p>₱10 per piece</p>
+        <div class="controls">
+          <label>PCS: </label>
+          <button class="minus">-</button>
+          <input type="number" value="1" min="1">
+          <button class="add">+</button>
+        </div>
+        <button class="add-cart-btn">Add to Cart</button>
+        <button class="checkout-btn">Check Out</button>
+      </div>
+
+      <!-- Repeat for OCTIBITES -->
+      <div class="product-card" data-name="OCTIBITES" data-price="10">
+        <img src="TK image/Octubites.jpg" alt="Octibites">
+        <h2>OCTIBITES</h2>
+        <p>₱10 per piece</p>
+        <div class="controls">
+          <label>PCS: </label>
+          <button class="minus">-</button>
+          <input type="number" value="1" min="1">
+          <button class="add">+</button>
+        </div>
+        <button class="add-cart-btn">Add to Cart</button>
+        <button class="checkout-btn">Check Out</button>
+      </div>
+    </div>
+  </main>
+</body>
+</html>

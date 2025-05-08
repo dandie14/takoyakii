@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+  <title>Takoyaki</title>
+  <link href="https://fonts.googleapis.com/css2?family=Sawarabi+Mincho&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="styles.css"/>
+</head>
+<body>
+  <header>
+    <div class="logo">
+      <img src="TK image/takoyaki-logo-design-vector.jpg" alt="Takoyaki Logo"/>
+    </div>
+    <input type="text" class="search-bar" placeholder="Search"/>
+    <nav>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="menu.html">Menu</a></li>
+        <li><a href="cart.html">Cart</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <section class="hero">
+    <div class="hero-image">
+      <img src="TK image/Ham.jpg" alt="Takoyaki"/>
+    </div>
+    <div class="hero-text">
+      <h1>Crispy Outside, Oozy Inside!</h1>
+      <p>Authentic Japanese Takoyaki – Cooked Fresh, Just for You!</p>
+      <a href="menu.html" class="order-btn">ORDER NOW</a>
+    </div>
+  </section>
+
+  <section class="bestsellers">
+    <h2>Best Sellers</h2>
+    <div class="card-container">
+      <div class="card">
+        <img src="TK image/download (1).jpg" alt="HAM"/>
+        <h3>HAM</h3>
+        <p>P100.00</p>
+        <p>for 8pcs</p>
+        <button class="add-cart-btn" data-name="HAM" data-price="100" data-image="TK image/download (1).jpg">Add to Cart</button>
+      </div>
+      <div class="card">
+        <img src="TK image/download (2).jpg" alt="CRAB"/>
+        <h3>CRAB</h3>
+        <p>P100.00</p>
+        <p>for 8pcs</p>
+        <button class="add-cart-btn" data-name="CRAB" data-price="100" data-image="TK image/download (2).jpg">Add to Cart</button>
+      </div>
+      <div class="card">
+        <img src="TK image/images.jpg" alt="CHEESE"/>
+        <h3>CHEESE</h3>
+        <p>P100.00</p>
+        <p>for 8pcs</p>
+        <button class="add-cart-btn" data-name="CHEESE" data-price="100" data-image="TK image/images.jpg">Add to Cart</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="testimonial">
+    <h2>What Our Customers Say</h2>
+    <blockquote>“Best takoyaki in town! Super cheesy at legit na lasa!” – Dandie D.</blockquote>
+    <blockquote>“Laging mainit at fresh, sulit na sulit!” – Chariza V.</blockquote>
+  </section>
+
+  <section class="promo">
+    <h2>🔥 ORDER NA</h2>
+    <p>Takoyaki with Heart</p>
+  </section>
+
+  <footer>
+    <div class="footer-links">
+      <a href="#">Home</a>
+      <a href="#">Contact Us</a>
+    </div>
+    <div class="social-media">
+      <a href="#"><img src="TK image/images.png" alt="Facebook"/></a>
+      <a href="#"><img src="TK image/download.jpg" alt="Instagram"/></a>
+    </div>
+  </footer>
+
+  <!-- Add to Cart Script -->
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const buttons = document.querySelectorAll(".add-cart-btn");
+
+      buttons.forEach(button => {
+        button.addEventListener("click", () => {
+          const name = button.dataset.name;
+          const price = parseFloat(button.dataset.price);
+          const image = button.dataset.image;
+
+          let cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+          const existingItemIndex = cart.findIndex(item => item.name === name);
+
+          if (existingItemIndex >= 0) {
+            cart[existingItemIndex].quantity += 1;
+            cart[existingItemIndex].total = cart[existingItemIndex].quantity * cart[existingItemIndex].price;
+          } else {
+            cart.push({ name, price, quantity: 1, total: price, image });
+          }
+
+          localStorage.setItem("cart", JSON.stringify(cart));
+          alert(name + " has been added to your cart.");
+        });
+      });
+    });
+  </script>
+</body>
+</html>
